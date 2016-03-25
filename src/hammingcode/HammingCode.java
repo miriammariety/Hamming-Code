@@ -19,12 +19,22 @@ public class HammingCode {
     public static void main(String[] args) {
         // TODO code application logic here
         HammingCode program = new HammingCode();
-        program.run();
+        Scanner in = new Scanner(System.in);
+        System.out.print("Choose: 1. Create Hamming Code\t 2.Correct Hamming Code");
+        int choice = in.nextInt();
+        while(invalidChoice(choice)){
+            System.out.println("Invalid choice! Input again: ");
+            choice = in.nextInt();
+        }
+        if(choice==1)
+            program.create();
+        else if (choice==2)
+            program.correct();
     }
     
-    public void run(){
+    public void create(){
         Scanner in = new Scanner(System.in);
-        System.out.println("Input:");
+        System.out.println("Input data:");
         String input = in.nextLine();
         while(invalidData(input)){
             System.out.print("Invalid input! Input again: ");
@@ -33,7 +43,7 @@ public class HammingCode {
         
         System.out.println("Select Parity: 1. Odd\t 2.Even");
         int parity = in.nextInt();
-        while(invalidParity(parity)){
+        while(invalidChoice(parity)){
             System.out.print("Invalid Parity! Input again: ");
             parity = in.nextInt();
         }
@@ -52,8 +62,8 @@ public class HammingCode {
         return false;
     }
 
-    private static boolean invalidParity(int parity) {
-        if(parity > 2 || parity < 1)
+    private static boolean invalidChoice(int choice) {
+        if(choice > 2 || choice < 1)
             return true;
         return false;
     }
@@ -119,4 +129,39 @@ public class HammingCode {
             return "1";
         }
     }
+
+    public void correct() {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Input Codeword:");
+        String input = in.nextLine();
+        while(invalidData(input)){
+            System.out.print("Invalid input! Input again: ");
+            input = in.nextLine();
+        }
+        
+        System.out.println("Select Parity: 1. Odd\t 2.Even");
+        int parity = in.nextInt();
+        while(invalidChoice(parity)){
+            System.out.print("Invalid Parity! Input again: ");
+            parity = in.nextInt();
+        }
+        
+        int bitError = checkBitError(input, parity);
     }
+
+    private int checkBitError(String input, int parity) {
+        bitCount = (int) (Math.log(input.length()) / Math.log(2)) + 1;
+        int position = 0;
+        for(int i=0; i < bitCount; i++){
+            int rIndex = (int) Math.pow(2,i) -1;
+            if(calculateR(input, rIndex, parity).equals("1")){
+                position += rIndex+1;
+            }
+        }
+        
+        if(position==0)
+            System.out.println("No errors");
+        else
+            System.out.println("Error at position " + position);
+    }
+}
