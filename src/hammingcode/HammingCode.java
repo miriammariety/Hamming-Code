@@ -25,6 +25,7 @@ public class HammingCode {
         boolean runProgram = true;
         while (runProgram) {
             System.out.println("Choose: 1. Create Hamming Code\t 2.Correct Hamming Code");
+            System.out.print("Choice: ");
             int choice = in.nextInt();
             while (invalidChoice(choice)) {
                 System.out.println("Invalid choice! Input again: ");
@@ -46,7 +47,7 @@ public class HammingCode {
 
     public void create() {
         Scanner in = new Scanner(System.in);
-        System.out.println("Input data:");
+        System.out.print("Input data: ");
         String input = in.nextLine();
         while (invalidData(input)) {
             System.out.print("Invalid input! Input again: ");
@@ -54,6 +55,7 @@ public class HammingCode {
         }
 
         System.out.println("Select Parity: 1. Odd\t 2.Even");
+        System.out.print("Choice: ");
         int parity = in.nextInt();
         while (invalidChoice(parity)) {
             System.out.print("Invalid Parity! Input again: ");
@@ -65,17 +67,18 @@ public class HammingCode {
 
     public void correct() {
         Scanner in = new Scanner(System.in);
-        System.out.println("Input Codeword: ");
+        System.out.print("Input Codeword: ");
         String input = in.nextLine();
 
-        //Ask for codeword
+        //Ask for correct codeword
         while (invalidData(input)) {
             System.out.print("Invalid input! Input again: ");
             input = in.nextLine();
         }
 
-        //Ask for parity
+        //Ask for correct parity
         System.out.println("Select Parity: 1. Odd\t 2.Even");
+        System.out.print("Choice: ");
         int parity = in.nextInt();
         while (invalidChoice(parity)) {
             System.out.print("Invalid Parity! Input again: ");
@@ -124,14 +127,16 @@ public class HammingCode {
     private String calculateCheckbit(String temp, int start, int parity) {
         int skip = start + 1;
         boolean use = true;
-        char[] bits = new char[bitCount * 2];
+        char[] bits = new char[temp.length()];
         int j = 0;
+        
+        //Loops for skips
         for (int i = start, counter = 1; i < temp.length(); i++, counter++) {
             if (use) {
                 bits[j++] = temp.charAt(i);
             }
             if (counter % skip == 0) {
-                use = !use;
+                use = !use; //Set to opposite
             }
         }
         int counter = 0;
@@ -186,9 +191,9 @@ public class HammingCode {
     }
 
     private static boolean invalidData(String input) {
-        if (input.length() < 8 || input.length() > 24) {
-            return true;
-        }
+//        if (input.length() < 8 || input.length() > 24) {
+//            return true;
+//        }
         for (int i = 0; i < input.length(); i++) {
             if (input.charAt(i) != '1' && input.charAt(i) != '0') {
                 return true;
